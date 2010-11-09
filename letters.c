@@ -16,7 +16,7 @@ int main()
     }
 
   for (i=0;i<26;i++)
-    printf("%c: %ld\n", 'a'+i, count[i]);
+    printf("%c: %.1g\n", 'a'+i, count[i]/(double)total);
 
   printf("Total: %ld letters\n", total);
 

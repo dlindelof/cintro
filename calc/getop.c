@@ -5,22 +5,40 @@
 /* getop:  get next character or numeric operand */
 int getop(char s[])
 {
-    int i, c;
+    int i = 0;
+    int c;
+    int next;
 
-    while ((s[0] = c = getch()) == ' ' || c == '\t')
+    /* Skip whitespace */
+    while((s[0] = c = getch()) == ' ' || c == '\t')
         ;
     s[1] = '\0';
-    if (!isdigit(c) && c != '.')
-        return c;      /* not a number */
-    i = 0;
-    if (isdigit(c))    /* collect integer part */
-        while (isdigit(s[++i] = c = getch()))
-           ;
-    if (c == '.')      /* collect fraction part */
-        while (isdigit(s[++i] = c = getch()))
-           ;
+
+    /* Not a number but may contain a unary minus. */
+    if(!isdigit(c) && c != '.' && c != '-')
+        return c;               
+
+    if(c == '-')
+    {
+        next = getch();
+        if(!isdigit(next) && next != '.')
+        {
+           return c;
+        }
+        c = next;
+    }
+    else
+    {
+        c = getch();
+    }
+ 
+    while(isdigit(s[++i] = c))
+            c = getch();
+    if(c == '.')                     /* Collect fraction part. */
+        while(isdigit(s[++i] = c = getch()))
+                        ;
     s[i] = '\0';
-    if (c != EOF)
+    if(c != EOF)
         ungetch(c);
     return NUMBER;
 }
