@@ -69,12 +69,12 @@ void test_matrix_multiply()
   double **a = chem_new_matrix(M,N);
   double **b = chem_new_matrix(N,O);
   int i,j;
-  free(a[0]);
   for (i=0;i<M;i++)
-    a[i] = A[i];
-  free(b[0]);
+    for (j=0;j<N;j++)
+      a[i][j] = A[i][j];
   for (i=0;i<N;i++)
-    b[i] = B[i];
+    for (j=0;j<O;j++)
+    b[i][j] = B[i][j];
   chem_matrix_multiply(c, a, b, M, N, O);
   for (i=0;i<M;i++) {
     for (j=0;j<O;j++) {
@@ -84,9 +84,9 @@ void test_matrix_multiply()
       }
     }
   }
+  chem_kill_matrix(a);
+  chem_kill_matrix(b);
   chem_kill_matrix(c);
-  free(a);
-  free(b);
 }
 
 int main()
