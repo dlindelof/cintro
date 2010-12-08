@@ -10,7 +10,7 @@ all: $(EXECUTABLES)
 # Tous les exécutables sont compilés depuis la source avec les
 # warnings activés (-Wall). Permet de détecter d'éventuelles erreurs.
 % :: %.c
-	gcc -Wall $< -o $@
+	gcc -g -Wall $< -o $@
 
 clean:
 	rm -f *.o *~ # efface les éventuels .o et les fichiers backup

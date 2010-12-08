@@ -25,18 +25,27 @@ double chem_mean(double *v, int n);
 double chem_var(double *v, int n);
 
 /*
- * Returns trace of mxn matrix.
+ * Returns trace of mxm matrix.
  */
 double chem_trace(double **M, int n);
 
 /*
  * Integrates function f over [a,b] through the trapezoidal method, dividing the 
- * interval into 2**n subintervals.
+ * interval into n subintervals.
  */
 double chem_integrate(double (*f)(double x), double a, double b, int n);
 
 /*
- * Finds root of function f with derivative ff between a and b through
- * Newton-Raphson method.
+ * Finds root of function f with derivative ff with starting point x
  */
-double chem_root(double (*f)(double x), double (*ff)(double x), double a, double b);
+double chem_root(double (*f)(double x), double (*ff)(double x), double x);
+
+/*
+ * Generate random integer between 0 and n exclusive
+ */
+int chem_random(int n);
+
+/*
+ * Solve linear system of equations with A(mxm) and B(mxn)
+ */
+void chem_pivot(double **A, double **B, int m, int n);

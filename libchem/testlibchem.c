@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <CUnit/Basic.h>
 #include "libchem.h"
 
 #define EPS 1e-8
@@ -89,10 +88,52 @@ void test_matrix_multiply()
   chem_kill_matrix(c);
 }
 
+double root_test_function(double x)
+{
+  return x-cos(x);
+}
+
+double root_test_function_derivative(double x)
+{
+  return 1+sin(x);
+}
+
+double integrate_test_function(double x)
+{
+  return x*x - cos(x);
+}
+
+void test_root()
+{
+  double expected = 0.73908513;
+  double actual = chem_root(root_test_function, root_test_function_derivative, 0);
+  if (fabs(expected-actual)>EPS) {
+    printf("chem_root: expected %.8g, actual %.8g\n", expected, actual);
+    exit(1);
+  }
+}
+
+#define RAND_N 967
+void test_random()
+{
+  int counts[RAND_N] = {0};
+  int i;
+  srand(1222);
+  for (i=0; i<RAND_N*10000; i++)
+    counts[chem_random(RAND_N)]++;
+  for (i=0; i<RAND_N; i++)
+    if (abs(counts[i]-10000)> 40) {
+      printf("chem_random: %d generated %d times instead of %d\n", i, counts[i], 10000);
+      exit(1);
+    }
+}
+
 int main()
 {
   test_matrix_multiply();
   test_mean();
+  test_root();
+  test_random();
   printf("All tests succesfully passed!\n");
   return 0;
 }
